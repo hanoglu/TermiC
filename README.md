@@ -8,7 +8,7 @@ TermiC uses following packages:
 gcc
 g++
 ```
-To install them:
+To install dependencies:
 ```bash
 apt install gcc g++ # Debian based distros
 dnf install gcc gcc-c++ # Fedora based distros
