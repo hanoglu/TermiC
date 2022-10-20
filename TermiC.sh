@@ -12,34 +12,36 @@ echo Type \'help\' for additional information
 cd /tmp
 sourceFile=`mktemp XXXXXXXX.$extension`
 binaryFile=`basename $sourceFile .$extension`
-fullPromt=""
+fullPrompt=""
 inlineCounter=0
+promptPS1=">> "
 echo -e "#include \"stdio.h\"\n#include \"stdlib.h\"\n${addInclude}int main() {\n" > $sourceFile
 while true;do
-	read -ep ">> "$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') promt
-	[[ $promt == "" ]] && continue
-	[[ $promt == "exit" ]] && break
-	[[ $promt == "help" ]] && echo -e "Designed by Yusuf Kağan Hanoğlu\nLicensed by BSD\
+	[[ $inlineCounter -gt 0 ]] && promptPS1="   " || promptPS1=">> "
+	read -ep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt
+	[[ $prompt == "" ]] && continue
+	[[ $prompt == "exit" ]] && break
+	[[ $prompt == "help" ]] && echo -e "Designed by Yusuf Kağan Hanoğlu\nLicensed by GPLv3\
 		\nC Mode: ./TermiC.sh\
 		\nCPP Mode: ./TermiC.sh cpp\
 		\n\nCommands:\nhelp: Displays this help page\nexit: Exit program" && continue
-	fullPromt=`echo -e "$fullPromt\n$promt"`
-	inlineOpen=`echo $fullPromt | grep -o { | wc -l`
-	inlineClose=`echo $fullPromt | grep -o } | wc -l`  
+	fullPrompt=`echo -e "$fullPrompt\n$prompt"`
+	inlineOpen=`echo $fullPrompt | grep -o { | wc -l`
+	inlineClose=`echo $fullPrompt | grep -o } | wc -l`  
 	inlineCounter=$((inlineOpen-inlineClose))
 	if [[ $inlineOpen -gt $inlineClose ]];then
 		:	
 	else
 		addHeader=false
-		[[ $promt == "#include "* ]] && addHeader=true
+		[[ $prompt == "#include "* ]] && addHeader=true
 		if $addHeader;then
-			echo "$fullPromt" > $sourceFile.tmp
+			echo "$fullPrompt" > $sourceFile.tmp
 			echo "`cat $sourceFile`" >> $sourceFile.tmp
 		else
 			cp $sourceFile $sourceFile.tmp
-			echo "$fullPromt;" >> $sourceFile.tmp
+			echo "$fullPrompt;" >> $sourceFile.tmp
 		fi
-		fullPromt=""
+		fullPrompt=""
 		compiledSuccessfully=false
 		$compiler -w -x$lang <(echo "`cat $sourceFile.tmp`}") -o $binaryFile && compiledSuccessfully=true
 		
