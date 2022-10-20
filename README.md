@@ -1,7 +1,7 @@
 # TermiC: Terminal C
 Interactive C/C++ shell created with BASH.
 ## How it Works
-All inputs given to TermiC are append to text file in /tmp directory. Then TermiC compiles that file and runs it. It simply takes the last line back if an output detected as all outputs should be seen once. TermiC nearly fully supports C and C++ as it basically use GCC and G++ compilers. All curly braces starts an inline prompt so nested functions, if/else statements, while/for loops, classes etc. can be used efficiently. I don't know if this kind of concept exist but I hope it would be useful.
+All inputs given to TermiC are append to text file in /tmp directory. Then TermiC compiles that file and runs it. It simply takes the last line back if an output detected as all outputs should be seen once. TermiC nearly fully supports C and C++ as it basically use GCC and G++ compilers. All curly braces starts an inline prompt so nested functions, if/else statements, while/for loops, classes etc. can be used efficiently. I don't know if there is such a concept, but I hope it will be useful.
 ## How to Install
 TermiC uses following packages:
 ```bash
