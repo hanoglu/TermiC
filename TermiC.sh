@@ -5,7 +5,7 @@ extension="c"
 compiler="gcc"
 addInclude=""
 [[ $1 == "cpp" ]] && lang="c++" && compiler="g++ -fpermissive" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
-echo PromtC 1.1V
+echo TermiC 1.1V
 echo Language: $lang
 echo Compiler: $compiler
 echo Type \'help\' for additional information
@@ -20,8 +20,8 @@ while true;do
 	[[ $promt == "" ]] && continue
 	[[ $promt == "exit" ]] && break
 	[[ $promt == "help" ]] && echo -e "Designed by Yusuf Kağan Hanoğlu\nLicensed by BSD\
-		\nC Mode: ./PromtC.sh\
-		\nCPP Mode: ./PromtC.sh cpp\
+		\nC Mode: ./TermiC.sh\
+		\nCPP Mode: ./TermiC.sh cpp\
 		\n\nCommands:\nhelp: Displays this help page\nexit: Exit program" && continue
 	fullPromt=`echo -e "$fullPromt\n$promt"`
 	inlineOpen=`echo $fullPromt | grep -o { | wc -l`
