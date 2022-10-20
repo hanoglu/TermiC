@@ -15,13 +15,13 @@ dnf install gcc gcc-c++ # Fedora based distros
 ```
 To run TermiC:
 ```bash
-wget https://raw.githubusercontent.com/hanoglu/TermiC/main/TermiC.sh
+wget "https://raw.githubusercontent.com/hanoglu/TermiC/main/TermiC.sh"
 chmod +x TermiC.sh
 bash TermiC.sh
 ```
 To install TermiC system wide:
 ```bash
-wget https://raw.githubusercontent.com/hanoglu/TermiC/main/TermiC.sh
+wget "https://raw.githubusercontent.com/hanoglu/TermiC/main/TermiC.sh"
 sudo cp TermiC.sh /bin/termic
 sudo bash -c "echo -e '#\!/bin/bash\n/bin/termic cpp' > /bin/termic++"
 sudo chmod +x /bin/termic
