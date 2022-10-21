@@ -1,5 +1,68 @@
 # TermiC: Terminal C
 Interactive C/C++ shell created with BASH.
+## How to Use
+A simple nested function in TermiC:
+```c
+[user@FEDORA ~]$ termic
+TermiC 1.1V
+Language: c
+Compiler: gcc
+Type 'help' for additional information
+>> double divide(double a, double b) {
+   ...if(b==0) {
+   ......return 0;
+   ......}
+   ...return a/b;
+   ...}
+>> printf("Division 25/2 is equal %f", divide(25,2))
+Division 25/2 is equal 12.500000
+>> 
+```
+Implementing classes in TermiC++:
+```cpp
+[user@FEDORA ~]$ termic++
+TermiC 1.1V
+Language: c++
+Compiler: g++ -fpermissive
+Type 'help' for additional information
+>> class Student {
+   ...public:
+   ...Student(int age) {
+   ......this->age = age;
+   ......}
+   ...int getAge() {
+   ......return age;
+   ......}
+   ...private:
+   ...int age;
+   ...}
+>> Student a(15)
+>> cout << "Age of student 'a' " << a.getAge()
+Age of student 'a' 15
+>> 
+```
+Using vectors in TermiC++:
+```cpp
+[user@FEDORA ~]$ termic++
+TermiC 1.1V
+Language: c++
+Compiler: g++ -fpermissive
+Type 'help' for additional information
+>> #include <vector>
+>> vector<int> a
+>> a.push_back(10)
+>> a.push_back(11)
+>> a.push_back(12)
+>> short counter = 0
+>> for(auto v:a) {
+   ...cout << ++counter << ". element of a is " << v << endl;
+   ...}
+1. element of a is 10
+2. element of a is 11
+3. element of a is 12
+>> 
+```
+Note: _stdio.h, stdlib.h and iostream(in TermiC++)_ are included automatically. Prompt will be inside scope of _int main()_ function so all functions will be nested functions. Because of lack of nested functions in G++ it is not possible to declare function if it's not inside a class in TermiC++.
 ## How it Works
 All inputs given to TermiC are append to text file in /tmp directory. Then TermiC compiles that file and runs it. It simply takes the last line back if an output detected as all outputs should be seen once. TermiC nearly fully supports C and C++ as it basically use GCC and G++ compilers. All curly braces starts an inline prompt so nested functions, if/else statements, while/for loops, classes etc. can be used efficiently. I don't know if there is such a concept, but I hope it will be useful.
 ## How to Install
