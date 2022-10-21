@@ -20,6 +20,7 @@ echo TermiC 1.1V
 echo Language: $lang
 echo Compiler: $compiler
 echo Type \'help\' for additional information
+oldPWD=`pwd`
 cd /tmp
 sourceFile=`mktemp XXXXXXXX.$extension`
 binaryFile=`basename $sourceFile .$extension`
@@ -33,10 +34,13 @@ while true;do
 	read -ep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt
 	[[ $prompt == "" ]] && continue
 	[[ $prompt == "exit" ]] && break
+	[[ $prompt == "abort" ]] && fullPrompt="" && inlineCounter=0 && continue
+	[[ $prompt == "save" ]] && cp $sourceFile $oldPWD && echo "Source file saved to $oldPWD/$sourceFile" && continue
 	[[ $prompt == "help" ]] && echo -e "Designed by Yusuf Kağan Hanoğlu\nLicensed by GPLv3\
 		\nC Mode: ./TermiC.sh\
 		\nCPP Mode: ./TermiC.sh cpp\
-		\n\nCommands:\nhelp: Displays this help page\nexit: Exit program" && continue
+		\n\nCommands:\nhelp: Displays this help page\nabort: Aborts inline promt mode\
+		\nsave: Saves c/cpp file to current working directory\nexit: Exit program" && continue
 	fullPrompt=`echo -e "$fullPrompt\n$prompt"`
 	inlineOpen=`echo $fullPrompt | grep -o { | wc -l`
 	inlineClose=`echo $fullPrompt | grep -o } | wc -l`  
