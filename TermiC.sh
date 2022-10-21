@@ -39,8 +39,8 @@ while true;do
 	[[ $prompt == "help" ]] && echo -e "Designed by Yusuf Kağan Hanoğlu\nLicensed by GPLv3\
 		\nC Mode: ./TermiC.sh\
 		\nCPP Mode: ./TermiC.sh cpp\
-		\n\nCommands:\nhelp: Displays this help page\nabort: Aborts inline promt mode\
-		\nsave: Saves c/cpp file to current working directory\nexit: Exit program" && continue
+		\n\nCommands:\nhelp: Shows this help menu\nabort: Aborts inline prompt mode which are entered by curly bracket\
+		\nsave: Saves source file to working directory\nexit: Deletes created temp files and exits program" && continue
 	fullPrompt=`echo -e "$fullPrompt\n$prompt"`
 	inlineOpen=`echo $fullPrompt | grep -o { | wc -l`
 	inlineClose=`echo $fullPrompt | grep -o } | wc -l`  
