@@ -62,7 +62,7 @@ while true;do
 		$compiler -w -x$lang <(echo "`cat $sourceFile.tmp`}") -o $binaryFile && compiledSuccessfully=true
 		
 		if $compiledSuccessfully;then
-			retval=`./$binaryFile`
+			retval=`./$binaryFile 2>&1`
 			[[ $retval == "" ]] && mv $sourceFile.tmp $sourceFile || echo "$retval"
 		fi
 	fi
