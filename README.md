@@ -1,7 +1,7 @@
 # TermiC: Terminal C
 Interactive C/C++ shell created with BASH.
 ## How to Use
-A simple nested function in TermiC:
+A simple function in TermiC:
 ```c
 [user@FEDORA ~]$ termic
 TermiC 1.1V
