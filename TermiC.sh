@@ -27,14 +27,15 @@ binaryFile=`basename $sourceFile .$extension`
 fullPrompt=""
 inlineCounter=0
 promptPS1=">> "
-echo -e "#include \"stdio.h\"\n#include \"stdlib.h\"\n${addInclude}int main() {\n" > $sourceFile
+initSource="#include \"stdio.h\"\n#include \"stdlib.h\"\n${addInclude}int main() {\n"
+echo -e  $initSource > $sourceFile
 
 while true;do
 	[[ $inlineCounter -gt 0 ]] && promptPS1="   " || promptPS1=">> "
 	read -ep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt
 	[[ $prompt == "" ]] && continue
 	[[ $prompt == "exit" ]] && break
-  [[ $prompt == "clear" ]] && sourceFile=`mktemp XXXXXXXX.$extension` && binaryFile=`basename $sourceFile .$extension` && fullPrompt="" && inlineCounter=0 && continue
+  [[ $prompt == "clear" ]] && sourceFile=`mktemp XXXXXXXX.$extension` && binaryFile=`basename $sourceFile .$extension` && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
 	[[ $prompt == "abort" ]] && fullPrompt="" && inlineCounter=0 && continue
   [[ $prompt == "show" ]] && cat $sourceFile && continue
   [[ $prompt == "showtmp" ]] && cat $sourceFile.tmp && continue
