@@ -62,7 +62,7 @@ Type 'help' for additional information
 3. element of a is 12
 >> 
 ```
-Note: _stdio.h, stdlib.h and iostream(in TermiC++)_ are included automatically. Prompt will be inside scope of _int main()_ function so all functions will be nested functions. Because of lack of nested functions in G++ it is not possible to declare function if it's not inside a class in TermiC++.
+Note: _stdio.h, stdlib.h and iostream(in TermiC++)_ are included automatically. Prompt will be inside scope of _int main()_ function but all declared functions/namespaces/classes/structs will be declared before _int main()_ automatically.
 ## How it Works
 All inputs given to TermiC are append to text file in /tmp directory. Then TermiC compiles that file and runs it. It simply takes the last line back if an output detected as all outputs should be seen once. TermiC nearly fully supports C and C++ as it basically use GCC and G++ compilers. All curly braces starts an inline prompt so nested functions, if/else statements, while/for loops, classes etc. can be used efficiently. I don't know if there is such a concept, but I hope it will be useful.
 #### Prompt Commands
@@ -70,7 +70,11 @@ All inputs given to TermiC are append to text file in /tmp directory. Then Termi
 |--------|-----------|
 |help|Shows the help menu|
 |abort|Aborts inline prompt mode which are entered by curly bracket|
+|show|Prints last successfully compiled source file|
+|showtmp|Prints last compiled source file with deleted edits|
 |save|Saves source file to working directory|
+|savebin|Saves binary file to working directory|
+|clear|Deletes all declared functions,classes etc. and resets shell|
 |exit|Deletes created temp files and exits program|
 
 ## How to Install
