@@ -101,6 +101,7 @@ sudo cp TermiC.sh /bin/termic
 sudo bash -c "echo -e '#\!/bin/bash\n/bin/termic cpp' > /bin/termic++"
 sudo chmod +x /bin/termic
 sudo chmod +x /bin/termic++
+rm -f TermiC.sh
 ```
 To start TermiC:
 ```bash
