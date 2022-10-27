@@ -16,7 +16,7 @@ extension="c"
 compiler="gcc"
 addInclude=""
 [[ $1 == "cpp" ]] && lang="c++" && compiler="g++ -fpermissive" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
-echo TermiC 1.1V
+echo TermiC 1.2V
 echo Language: $lang
 echo Compiler: $compiler
 echo Type \'help\' for additional information
@@ -34,33 +34,46 @@ while true;do
 	read -ep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt
 	[[ $prompt == "" ]] && continue
 	[[ $prompt == "exit" ]] && break
+  [[ $prompt == "clear" ]] && sourceFile=`mktemp XXXXXXXX.$extension` && binaryFile=`basename $sourceFile .$extension` && fullPrompt="" && inlineCounter=0 && continue
 	[[ $prompt == "abort" ]] && fullPrompt="" && inlineCounter=0 && continue
-	[[ $prompt == "save" ]] && cp $sourceFile $oldPWD && echo "Source file saved to $oldPWD/$sourceFile" && continue
+  [[ $prompt == "show" ]] && cat $sourceFile && continue
+  [[ $prompt == "showtmp" ]] && cat $sourceFile.tmp && continue
+	[[ $prompt == "save" ]] && cp $sourceFile $oldPWD && echo "}" >> $oldPWD/$sourceFile && echo "Source file saved to $oldPWD/$sourceFile" && continue
+	[[ $prompt == "savebin" ]] && cp $binaryFile $oldPWD && echo "Binary file saved to $oldPWD/$binaryFile" && continue
 	[[ $prompt == "help" ]] && echo -e "Designed by Yusuf Kağan Hanoğlu\nLicensed by GPLv3\
 		\nC Mode: ./TermiC.sh\
 		\nCPP Mode: ./TermiC.sh cpp\
 		\n\nCommands:\nhelp: Shows this help menu\nabort: Aborts inline prompt mode which are entered by curly bracket\
-		\nsave: Saves source file to working directory\nexit: Deletes created temp files and exits program" && continue
+		\nshow: Prints last successfully compiled source file\nshowtmp: Prints last compiled source file with deleted edits\
+		\nsave: Saves source file to working directory\nsavebin: Saves binary file to working directory\
+		\nclear: Deletes all declared functions,classes etc. and resets shell\
+		\nexit: Deletes created temp files and exits program" && continue
 	fullPrompt=`echo -e "$fullPrompt\n$prompt"`
 	inlineOpen=`echo $fullPrompt | grep -o { | wc -l`
-	inlineClose=`echo $fullPrompt | grep -o } | wc -l`  
+	inlineClose=`echo $fullPrompt | grep -o } | wc -l`
 	inlineCounter=$((inlineOpen-inlineClose))
 	if [[ $inlineOpen -gt $inlineClose ]];then
-		:	
+		:
 	else
-		addHeader=false
-		[[ $prompt == "#include "* ]] && addHeader=true
-		if $addHeader;then
+		addOutsideMain=false
+		addToBegining=false
+		# If include statement, function or namespace/class/struct decleration add outside to main function
+		[[ $prompt == "#include "* ]] && atTheBegining=true
+		[[ $fullPrompt =~ ^.[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]:]+\(.*\)[[:blank:]]*\{ ]] || [[ $fullPrompt =~ ^.[[:alnum:]\*:]*[[:blank:]]*(namespace|class|struct)[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*\{ ]] && addOutsideMain=true
+		if $addToBegining;then
 			echo "$fullPrompt" > $sourceFile.tmp
 			echo "`cat $sourceFile`" >> $sourceFile.tmp
-		else
+		elif $addOutsideMain;then
+      fullPrompt=`echo $fullPrompt`
+      sed "/^int main() {/i$fullPrompt;" $sourceFile > $sourceFile.tmp
+    else
 			cp $sourceFile $sourceFile.tmp
 			echo "$fullPrompt;" >> $sourceFile.tmp
 		fi
 		fullPrompt=""
 		compiledSuccessfully=false
 		$compiler -w -x$lang <(echo "`cat $sourceFile.tmp`}") -o $binaryFile && compiledSuccessfully=true
-		
+
 		if $compiledSuccessfully;then
 			retval=`./$binaryFile 2>&1`
 			[[ $retval == "" ]] && mv $sourceFile.tmp $sourceFile || echo "$retval"
