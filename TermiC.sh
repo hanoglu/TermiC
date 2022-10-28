@@ -28,7 +28,7 @@ binaryFile=`basename $sourceFile .$extension`
 fullPrompt=""
 inlineCounter=0
 promptPS1=">> "
-initSource="#include \"stdio.h\"\n#include \"stdlib.h\"\n${addInclude}int main() {\n"
+initSource="#include \"stdio.h\"\n#include \"stdlib.h\"\n${addInclude}int main() {"
 echo -e  $initSource > $sourceFile
 
 while true;do
@@ -50,7 +50,7 @@ while true;do
 		\nsave: Saves source file to working directory\nsavebin: Saves binary file to working directory\
 		\nclear: Deletes all declared functions,classes etc. and resets shell\
 		\nexit: Deletes created temp files and exits program" && continue
-	fullPrompt=`echo -e "$fullPrompt\n$prompt"`
+	fullPrompt=`echo -e "$fullPrompt\n$prompt" | sed '/^[[:blank:]]*$/d'`
 	inlineOpen=`echo $fullPrompt | grep -o { | wc -l`
 	inlineClose=`echo $fullPrompt | grep -o } | wc -l`
 	inlineCounter=$((inlineOpen-inlineClose))
@@ -64,12 +64,12 @@ while true;do
 		[[ $prompt == "#include "* ]] && addToBegining=true && addSemicolon=""
 		# If definition
 		[[ $prompt == "#define "* ]] && addOutsideMain=true && addSemicolon=""
-		# If if/else statement TODO
-		#[[ $prompt =~ ^() ]]
 		# If function decleration
-		[[ $fullPrompt =~ ^.[[:alnum:]\*:]+[[:blank:]]+[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]:]+\(.*\)[[:blank:]]*.*\{ ]] && [[ ! $fullPrompt =~ (else ) ]] && addOutsideMain=true && addSemicolon=""
+		[[ $fullPrompt =~ ^.?[[:alnum:]\*:]+[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]:]+\(.*\)[[:blank:]]*.*\{ ]] && addOutsideMain=true && addSemicolon=""
 		# If namespace/class/struct decleration
-		[[ $fullPrompt =~ ^.[[:alnum:]\*:]*[[:blank:]]*(namespace|class|struct)[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*.*\{ ]] && addOutsideMain=true
+		[[ $fullPrompt =~ ^.?[[:alnum:]\*:]*[[:blank:]]*(namespace|class|struct)[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*.*\{ ]] && addOutsideMain=true
+		# If if/else if/else/switch/while/do while/for/try/catch
+		[[ $fullPrompt =~ ^.?[[:blank:]]*(if|else if|else|switch|while|do|for|try|catch).*\{ ]] && addOutsideMain=false && addToBegining=false && addSemicolon=""
 		if $addToBegining;then
 			echo "$fullPrompt"$addSemicolon > $sourceFile.tmp
 			echo "`cat $sourceFile`" >> $sourceFile.tmp
