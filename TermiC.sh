@@ -16,7 +16,7 @@ extension="c"
 compiler="gcc"
 addInclude=""
 [[ $1 == "cpp" ]] && lang="c++" && compiler="g++ -fpermissive" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
-echo TermiC 1.2V
+echo TermiC 1.2.1V
 echo Language: $lang
 echo Compiler: $compiler
 echo Type \'help\' for additional information
