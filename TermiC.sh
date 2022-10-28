@@ -36,10 +36,10 @@ while true;do
 	read -ep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt
 	[[ $prompt == "" ]] && continue
 	[[ $prompt == "exit" ]] && break
-  [[ $prompt == "clear" ]] && sourceFile=`mktemp termic-XXXXXXXX.$extension` && binaryFile=`basename $sourceFile .$extension` && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
+	[[ $prompt == "clear" ]] && sourceFile=`mktemp termic-XXXXXXXX.$extension` && binaryFile=`basename $sourceFile .$extension` && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
 	[[ $prompt == "abort" ]] && fullPrompt="" && inlineCounter=0 && continue
-  [[ $prompt == "show" ]] && cat $sourceFile && continue
-  [[ $prompt == "showtmp" ]] && cat $sourceFile.tmp && continue
+	[[ $prompt == "show" ]] && cat $sourceFile && continue
+	[[ $prompt == "showtmp" ]] && cat $sourceFile.tmp && continue
 	[[ $prompt == "save" ]] && cp $sourceFile $oldPWD && echo "}" >> $oldPWD/$sourceFile && echo "Source file saved to $oldPWD/$sourceFile" && continue
 	[[ $prompt == "savebin" ]] && cp $binaryFile $oldPWD && echo "Binary file saved to $oldPWD/$binaryFile" && continue
 	[[ $prompt == "help" ]] && echo -e "Designed by Yusuf Kağan Hanoğlu\nLicensed by GPLv3\
@@ -59,18 +59,26 @@ while true;do
 	else
 		addOutsideMain=false
 		addToBegining=false
-		# If include statement, function or namespace/class/struct decleration add outside to main function
-		[[ $prompt == "#include "* ]] && addToBegining=true
-		[[ $fullPrompt =~ ^.[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]:]+\(.*\)[[:blank:]]*.*\{ ]] || [[ $fullPrompt =~ ^.[[:alnum:]\*:]*[[:blank:]]*(namespace|class|struct)[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*.*\{ ]] && addOutsideMain=true
+		addSemicolon=";"
+		# If include statement
+		[[ $prompt == "#include "* ]] && addToBegining=true && addSemicolon=""
+		# If definition
+		[[ $prompt == "#define "* ]] && addOutsideMain=true && addSemicolon=""
+		# If if/else statement TODO
+		#[[ $prompt =~ ^() ]]
+		# If function decleration
+		[[ $fullPrompt =~ ^.[[:alnum:]\*:]+[[:blank:]]+[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]:]+\(.*\)[[:blank:]]*.*\{ ]] && [[ ! $fullPrompt =~ (else ) ]] && addOutsideMain=true && addSemicolon=""
+		# If namespace/class/struct decleration
+		[[ $fullPrompt =~ ^.[[:alnum:]\*:]*[[:blank:]]*(namespace|class|struct)[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*.*\{ ]] && addOutsideMain=true
 		if $addToBegining;then
-			echo "$fullPrompt" > $sourceFile.tmp
+			echo "$fullPrompt"$addSemicolon > $sourceFile.tmp
 			echo "`cat $sourceFile`" >> $sourceFile.tmp
 		elif $addOutsideMain;then
-      fullPrompt=`echo $fullPrompt`
-      sed "/^int main() {/i$fullPrompt;" $sourceFile > $sourceFile.tmp
-    else
+			fullPrompt=`echo $fullPrompt`
+			sed "/^int main() {/i$fullPrompt$addSemicolon" $sourceFile > $sourceFile.tmp
+		else
 			cp $sourceFile $sourceFile.tmp
-			echo "$fullPrompt;" >> $sourceFile.tmp
+			echo "$fullPrompt$addSemicolon" >> $sourceFile.tmp
 		fi
 		fullPrompt=""
 		compiledSuccessfully=false
