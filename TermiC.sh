@@ -60,7 +60,7 @@ while true;do
 		addToBegining=false
 		# If include statement, function or namespace/class/struct decleration add outside to main function
 		[[ $prompt == "#include "* ]] && addToBegining=true
-		[[ $fullPrompt =~ ^.[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]:]+\(.*\)[[:blank:]]*\{ ]] || [[ $fullPrompt =~ ^.[[:alnum:]\*:]*[[:blank:]]*(namespace|class|struct)[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*\{ ]] && addOutsideMain=true
+		[[ $fullPrompt =~ ^.[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]:]+\(.*\)[[:blank:]]*.*\{ ]] || [[ $fullPrompt =~ ^.[[:alnum:]\*:]*[[:blank:]]*(namespace|class|struct)[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*.*\{ ]] && addOutsideMain=true
 		if $addToBegining;then
 			echo "$fullPrompt" > $sourceFile.tmp
 			echo "`cat $sourceFile`" >> $sourceFile.tmp
