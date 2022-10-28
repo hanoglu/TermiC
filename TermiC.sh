@@ -22,7 +22,8 @@ echo Compiler: $compiler
 echo Type \'help\' for additional information
 oldPWD=`pwd`
 cd /tmp
-sourceFile=`mktemp XXXXXXXX.$extension`
+rm termic-* &> /dev/null
+sourceFile=`mktemp termic-XXXXXXXX.$extension`
 binaryFile=`basename $sourceFile .$extension`
 fullPrompt=""
 inlineCounter=0
@@ -35,7 +36,7 @@ while true;do
 	read -ep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt
 	[[ $prompt == "" ]] && continue
 	[[ $prompt == "exit" ]] && break
-  [[ $prompt == "clear" ]] && sourceFile=`mktemp XXXXXXXX.$extension` && binaryFile=`basename $sourceFile .$extension` && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
+  [[ $prompt == "clear" ]] && sourceFile=`mktemp termic-XXXXXXXX.$extension` && binaryFile=`basename $sourceFile .$extension` && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
 	[[ $prompt == "abort" ]] && fullPrompt="" && inlineCounter=0 && continue
   [[ $prompt == "show" ]] && cat $sourceFile && continue
   [[ $prompt == "showtmp" ]] && cat $sourceFile.tmp && continue
@@ -82,6 +83,4 @@ while true;do
 	fi
 done
 
-rm $sourceFile &> /dev/null
-rm $sourceFile.tmp &> /dev/null
-rm $binaryFile &> /dev/null
+rm termic-* &> /dev/null
