@@ -16,7 +16,7 @@ extension="c"
 compiler="gcc"
 addInclude=""
 [[ $1 == "cpp" ]] && lang="c++" && compiler="g++ -fpermissive" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
-echo TermiC 1.2.1V
+echo TermiC 1.2.2V
 echo Language: $lang
 echo Compiler: $compiler
 echo Type \'help\' for additional information
@@ -33,7 +33,7 @@ echo -e  $initSource > $sourceFile
 
 while true;do
 	[[ $inlineCounter -gt 0 ]] && promptPS1="   " || promptPS1=">> "
-	read -ep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt
+	read -rep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt
 	[[ $prompt == "" ]] && continue
 	[[ $prompt == "exit" ]] && break
 	[[ $prompt == "clear" ]] && sourceFile=`mktemp termic-XXXXXXXX.$extension` && binaryFile=`basename $sourceFile .$extension` && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
@@ -50,7 +50,8 @@ while true;do
 		\nsave: Saves source file to working directory\nsavebin: Saves binary file to working directory\
 		\nclear: Deletes all declared functions,classes etc. and resets shell\
 		\nexit: Deletes created temp files and exits program" && continue
-	fullPrompt=`echo -e "$fullPrompt\n$prompt" | sed '/^[[:blank:]]*$/d'`
+	fullPrompt=`echo "$fullPrompt"; echo "$prompt"`
+	fullPrompt=`echo $fullPrompt | sed '/^[[:blank:]]*$/d'`
 	inlineOpen=`echo $fullPrompt | grep -o { | wc -l`
 	inlineClose=`echo $fullPrompt | grep -o } | wc -l`
 	inlineCounter=$((inlineOpen-inlineClose))
@@ -74,7 +75,7 @@ while true;do
 			echo "$fullPrompt"$addSemicolon > $sourceFile.tmp
 			echo "`cat $sourceFile`" >> $sourceFile.tmp
 		elif $addOutsideMain;then
-			fullPrompt=`echo $fullPrompt`
+			fullPrompt=`printf "%s" "$fullPrompt" | sed -e 's/[&\\]/\\\&/g'`
 			sed "/^int main() {/i$fullPrompt$addSemicolon" $sourceFile > $sourceFile.tmp
 		else
 			cp $sourceFile $sourceFile.tmp
