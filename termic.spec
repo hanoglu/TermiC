@@ -37,6 +37,9 @@ rm -rf $RPM_BUILD_ROOT
 * Sat Nov 05 2022 Yusuf Kağan Hanoğlu <hanoglu@yahoo.com> 1.2.2-1
 - new package built with tito
 
+* Sat Nov 05 2022 Yusuf Kağan Hanoğlu <hanoglu@yahoo.com> 1.2.2-1
+- new package built with tito
+
 * Sat Nov 05 2022 Yusuf Kağan Hanoğlu <hanoglu@yahoo.com> 0.0.1-1
 - new package built with tito
 
