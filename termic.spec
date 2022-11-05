@@ -18,6 +18,7 @@ Requires:       bash, gcc, gcc-c++
 GCC powered interactive C/C++ terminal created with BASH
 
 %install
+echo "DENEME:  $PWD"
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
 cp %{name} $RPM_BUILD_ROOT/%{_bindir}
