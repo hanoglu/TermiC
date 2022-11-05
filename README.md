@@ -102,7 +102,12 @@ sudo ln -s /usr/bin/termic /usr/bin/termic++
 sudo chmod +x /bin/termic
 rm -f TermiC.sh
 ```
-Note: [_DEB_](https://github.com/hanoglu/TermiC/releases/download/V1.2.2/termic-1.2.2.deb) and [_RPM_](https://github.com/hanoglu/TermiC/releases/download/V1.2.2/termic-1.2.2.noarch.rpm) files in [releases](https://github.com/hanoglu/TermiC/releases/tag/V1.2.2) page can be used to install TermiC in Debian/Fedora based systems.<br><br>
+Note: [_DEB_](https://github.com/hanoglu/TermiC/releases/download/V1.2.2/termic-1.2.2.deb) and [_RPM_](https://github.com/hanoglu/TermiC/releases/download/V1.2.2/termic-1.2.2.noarch.rpm) files in [releases](https://github.com/hanoglu/TermiC/releases/tag/V1.2.2) page can be used to install TermiC in Debian/Fedora based systems. Also _COPR repository_ can be used to install TermiC in Fedora based distros.<br><br>
+Install with COPR:
+```bash
+sudo dnf copr enable hanoglu/termic
+sudo dnf install termic
+```
 To start TermiC:
 ```bash
 termic # For C shell
