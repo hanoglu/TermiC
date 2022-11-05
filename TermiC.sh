@@ -15,14 +15,13 @@ lang="c"
 extension="c"
 compiler="gcc"
 addInclude=""
-[[ $1 == "cpp" ]] && lang="c++" && compiler="g++ -fpermissive" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
+[[ $1 == "cpp" ]] || [[ $0 =~ \+\+ ]] && lang="c++" && compiler="g++ -fpermissive" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
 echo TermiC 1.2.2V
 echo Language: $lang
 echo Compiler: $compiler
 echo Type \'help\' for additional information
 oldPWD=`pwd`
 cd /tmp
-rm termic-* &> /dev/null
 sourceFile=`mktemp termic-XXXXXXXX.$extension`
 binaryFile=`basename $sourceFile .$extension`
 fullPrompt=""
@@ -36,7 +35,7 @@ while true;do
 	read -rep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt
 	[[ $prompt == "" ]] && continue
 	[[ $prompt == "exit" ]] && break
-	[[ $prompt == "clear" ]] && sourceFile=`mktemp termic-XXXXXXXX.$extension` && binaryFile=`basename $sourceFile .$extension` && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
+	[[ $prompt == "clear" ]] && :> $sourceFile && :> $sourceFile.tmp && :> $binaryFile && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
 	[[ $prompt == "abort" ]] && fullPrompt="" && inlineCounter=0 && continue
 	[[ $prompt == "show" ]] && cat $sourceFile && continue
 	[[ $prompt == "showtmp" ]] && cat $sourceFile.tmp && continue
@@ -92,4 +91,5 @@ while true;do
 	fi
 done
 
-rm termic-* &> /dev/null
+rm $sourceFile* &> /dev/null
+rm $binaryFile &> /dev/null
