@@ -17,10 +17,12 @@ Requires:       bash, gcc, gcc-c++
 %description
 GCC powered interactive C/C++ terminal created with BASH
 %prep
+%setup -q
+
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-cp `find %{_sourcedir}  -maxdepth 1 -mindepth 1 -type d`/TermiC.sh $RPM_BUILD_ROOT/%{_bindir}/termic
+cp TermiC.sh $RPM_BUILD_ROOT/%{_bindir}/termic
 ln -s %{name} $RPM_BUILD_ROOT/%{_bindir}/%{name}++
 chmod +x $RPM_BUILD_ROOT/%{_bindir}/%{name}
 chmod +x $RPM_BUILD_ROOT/%{_bindir}/%{name}++
