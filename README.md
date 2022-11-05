@@ -4,7 +4,7 @@ Interactive C/C++ shell created with BASH.
 A simple function in TermiC:
 ```c
 [user@FEDORA ~]$ termic
-TermiC 1.1V
+TermiC 1.2.2V
 Language: c
 Compiler: gcc
 Type 'help' for additional information
@@ -21,7 +21,7 @@ Division 25/2 is equal 12.500000
 Implementing classes in TermiC++:
 ```cpp
 [user@FEDORA ~]$ termic++
-TermiC 1.1V
+TermiC 1.2.2V
 Language: c++
 Compiler: g++ -fpermissive
 Type 'help' for additional information
@@ -44,7 +44,7 @@ Age of student 'a' 15
 Using vectors in TermiC++:
 ```cpp
 [user@FEDORA ~]$ termic++
-TermiC 1.1V
+TermiC 1.2.2V
 Language: c++
 Compiler: g++ -fpermissive
 Type 'help' for additional information
@@ -98,11 +98,11 @@ To install TermiC system wide:
 ```bash
 wget "https://raw.githubusercontent.com/hanoglu/TermiC/main/TermiC.sh"
 sudo cp TermiC.sh /bin/termic
-sudo bash -c "echo -e '#\!/bin/bash\n/bin/termic cpp' > /bin/termic++"
+sudo ln -s /usr/bin/termic /usr/bin/termic++
 sudo chmod +x /bin/termic
-sudo chmod +x /bin/termic++
 rm -f TermiC.sh
 ```
+Note: [_DEB_](https://github.com/hanoglu/TermiC/releases/download/V1.2.2/termic-1.2.2.deb) and [_RPM_](https://github.com/hanoglu/TermiC/releases/download/V1.2.2/termic-1.2.2.noarch.rpm) files in [releases](https://github.com/hanoglu/TermiC/releases/tag/V1.2.2) page can be used to install TermiC in Debian/Fedora based systems.<br><br>
 To start TermiC:
 ```bash
 termic # For C shell
