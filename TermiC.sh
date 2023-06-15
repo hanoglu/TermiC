@@ -32,7 +32,7 @@ echo -e  $initSource > $sourceFile
 
 while true;do
 	[[ $inlineCounter -gt 0 ]] && promptPS1="   " || promptPS1=">> "
-	read -rep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt
+	read -rep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt || break
 	[[ $prompt == "" ]] && continue
 	[[ $prompt == "exit" ]] && break
 	[[ $prompt == "clear" ]] && :> $sourceFile && :> $sourceFile.tmp && :> $binaryFile && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
