@@ -15,6 +15,7 @@ lang="c"
 extension="c"
 compiler="gcc"
 addInclude=""
+[[ $1 == "tcc" ]] && compiler="tcc"
 [[ $1 == "cpp" ]] || [[ $0 =~ \+\+ ]] && lang="c++" && compiler="g++ -fpermissive" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
 echo TermiC 1.2.2V
 echo Language: $lang
