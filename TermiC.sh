@@ -25,6 +25,10 @@ oldPWD=`pwd`
 cd /tmp
 sourceFile=`mktemp termic-XXXXXXXX.$extension`
 binaryFile=`basename $sourceFile .$extension`
+cacheDir="${XDG_CACHE_HOME:-$HOME/.cache}/termic"
+[[ -d $cacheDir ]] || mkdir -p "$cacheDir"
+historyFile="$cacheDir/${extension}_history"
+history -r "$historyFile"
 fullPrompt=""
 inlineCounter=0
 promptPS1=">> "
@@ -36,6 +40,7 @@ while true;do
 	[[ $inlineCounter -gt 0 ]] && promptPS1="   " || promptPS1=">> "
   	prompt=$(read -rep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt || { [[ $inlineCounter -gt 0 ]] || prompt="exit"; } ; echo $prompt) 
 	[[ $prompt == "" ]] && continue
+	history -s "$prompt"
 	[[ $prompt == "exit" ]] && break
 	[[ $prompt == "clear" ]] && :> $sourceFile && :> $sourceFile.tmp && :> $binaryFile && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
 	[[ $prompt == "abort" ]] && fullPrompt="" && inlineCounter=0 && continue
@@ -93,5 +98,6 @@ while true;do
 	fi
 done
 
+history -a "$historyFile"
 rm $sourceFile* &> /dev/null
 rm $binaryFile &> /dev/null
