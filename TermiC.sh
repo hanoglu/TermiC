@@ -30,9 +30,10 @@ promptPS1=">> "
 initSource="#include \"stdio.h\"\n#include \"stdlib.h\"\n${addInclude}int main() {"
 echo -e  $initSource > $sourceFile
 
+trap "echo -e '\nKeyboardInterrupt'" SIGINT
 while true;do
 	[[ $inlineCounter -gt 0 ]] && promptPS1="   " || promptPS1=">> "
-	read -rep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt || break
+  	prompt=$(read -rep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt || { [[ $inlineCounter -gt 0 ]] || prompt="exit"; } ; echo $prompt) 
 	[[ $prompt == "" ]] && continue
 	[[ $prompt == "exit" ]] && break
 	[[ $prompt == "clear" ]] && :> $sourceFile && :> $sourceFile.tmp && :> $binaryFile && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
