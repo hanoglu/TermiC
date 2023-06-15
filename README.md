@@ -112,6 +112,7 @@ To start TermiC:
 ```bash
 termic # For C shell
 termic++ # For C++ shell
+termic tcc # For C shell using the tcc compiler
 ```
 To remove TermiC system wide:
 ```bash
