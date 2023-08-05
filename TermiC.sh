@@ -45,7 +45,7 @@ while true;do
 	[[ $prompt == "clear" ]] && :> $sourceFile && :> $sourceFile.tmp && :> $binaryFile && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
 	[[ $prompt == "abort" ]] && fullPrompt="" && inlineCounter=0 && continue
 	[[ $prompt == "show" ]] && cat $sourceFile && continue
-	[[ $prompt == "showtmp" ]] && cat $sourceFile.tmp && continue
+	[[ $prompt == "showtmp" ]] && { [[ -f $sourceFile.tmp ]] && cat $sourceFile.tmp || echo "No .tmp file!"; continue; }
 	[[ $prompt == "save" ]] && cp $sourceFile $oldPWD && echo "}" >> $oldPWD/$sourceFile && echo "Source file saved to $oldPWD/$sourceFile" && continue
 	[[ $prompt == "savebin" ]] && cp $binaryFile $oldPWD && echo "Binary file saved to $oldPWD/$binaryFile" && continue
 	[[ $prompt == "help" ]] && echo -e "Designed by Yusuf Kağan Hanoğlu\nLicensed by GPLv3\
