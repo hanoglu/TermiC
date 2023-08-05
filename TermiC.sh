@@ -29,6 +29,8 @@ cacheDir="${XDG_CACHE_HOME:-$HOME/.cache}/termic"
 [[ -d $cacheDir ]] || mkdir -p "$cacheDir"
 historyFile="$cacheDir/${extension}_history"
 history -r "$historyFile"
+# disable filename completion on tab
+bind -r "\C-i" 2> /dev/null
 fullPrompt=""
 inlineCounter=0
 promptPS1=">> "
