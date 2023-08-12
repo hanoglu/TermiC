@@ -17,6 +17,7 @@ compiler="gcc"
 addInclude=""
 [[ $1 == "tcc" ]] && compiler="tcc"
 [[ $1 == "cpp" ]] || [[ $0 =~ \+\+ ]] && lang="c++" && compiler="g++ -fpermissive" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
+command -v bat > /dev/null 2>&1 && catcmd="bat -p -l $lang" || catcmd=cat
 echo TermiC 1.2.2V
 echo Language: $lang
 echo Compiler: $compiler
@@ -46,8 +47,8 @@ while true;do
 	[[ $prompt == "exit" ]] && break
 	[[ $prompt == "clear" ]] && :> $sourceFile && :> $sourceFile.tmp && :> $binaryFile && fullPrompt="" && inlineCounter=0 && echo -e  $initSource > $sourceFile && continue
 	[[ $prompt == "abort" ]] && fullPrompt="" && inlineCounter=0 && continue
-	[[ $prompt == "show" ]] && cat $sourceFile && continue
-	[[ $prompt == "showtmp" ]] && cat $sourceFile.tmp && continue
+	[[ $prompt == "show" ]] && $catcmd $sourceFile && continue
+	[[ $prompt == "showtmp" ]] && $catcmd $sourceFile.tmp && continue
 	[[ $prompt == "save" ]] && cp $sourceFile $oldPWD && echo "}" >> $oldPWD/$sourceFile && echo "Source file saved to $oldPWD/$sourceFile" && continue
 	[[ $prompt == "savebin" ]] && cp $binaryFile $oldPWD && echo "Binary file saved to $oldPWD/$binaryFile" && continue
 	[[ $prompt == "help" ]] && echo -e "Designed by Yusuf Kağan Hanoğlu\nLicensed by GPLv3\
