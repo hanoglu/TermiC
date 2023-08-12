@@ -79,7 +79,9 @@ while true;do
 		# If namespace/class/struct declaration
 		[[ $fullPrompt =~ ^.?[[:alnum:]\*:]*[[:blank:]]*(namespace|class|struct)[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*.*\{ ]] && addOutsideMain=true
 		# If if/else if/else/switch/while/do while/for/try/catch
+
 		[[ $fullPrompt =~ ^.?[[:blank:]]*(if|else if|else|switch|while|do|for|try|catch).*\{ ]] && addOutsideMain=false && addToBeginning=false && addSemicolon=""
+    [[ $fullPrompt == *";" ]] && addSemicolon=""
 		if $addToBeginning;then
 			echo "$fullPrompt"$addSemicolon > $sourceFile.tmp
 			echo "`cat $sourceFile`" >> $sourceFile.tmp
