@@ -40,7 +40,7 @@ echo -e  $initSource > $sourceFile
 trap "echo -e '\nKeyboardInterrupt'" SIGINT
 while true;do
 	[[ $inlineCounter -gt 0 ]] && promptPS1="   " || promptPS1=">> "
-  	prompt=$(read -rep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt || { [[ $inlineCounter -gt 0 ]] || prompt="exit"; } ; echo $prompt) 
+	prompt=$(read -rep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt || { [[ $inlineCounter -gt 0 ]] || prompt="exit"; } ; echo $prompt)
 	[[ $prompt == "" ]] && continue
 	history -s "$prompt"
 	[[ $prompt == "exit" ]] && break
@@ -56,7 +56,7 @@ while true;do
 		\n\nCommands:\nhelp: Shows this help menu\nabort: Aborts inline prompt mode which are entered by curly bracket\
 		\nshow: Prints last successfully compiled source file\nshowtmp: Prints last compiled source file with deleted edits\
 		\nsave: Saves source file to working directory\nsavebin: Saves binary file to working directory\
-		\nclear: Deletes all declared functions,classes etc. and resets shell\
+		\nclear: Deletes all declared functions, classes etc. and resets shell\
 		\nexit: Deletes created temp files and exits program" && continue
 	fullPrompt=`echo "$fullPrompt"; echo "$prompt"`
 	fullPrompt=`echo $fullPrompt | sed '/^[[:blank:]]*$/d'`
@@ -67,19 +67,19 @@ while true;do
 		:
 	else
 		addOutsideMain=false
-		addToBegining=false
+		addToBeginning=false
 		addSemicolon=";"
 		# If include statement
-		[[ $prompt == "#include "* ]] && addToBegining=true && addSemicolon=""
+		[[ $prompt == "#include "* ]] && addToBeginning=true && addSemicolon=""
 		# If definition
 		[[ $prompt == "#define "* ]] && addOutsideMain=true && addSemicolon=""
-		# If function decleration
+		# If function declaration
 		[[ $fullPrompt =~ ^.?[[:alnum:]\*:]+[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]:]+\(.*\)[[:blank:]]*.*\{ ]] && addOutsideMain=true && addSemicolon=""
-		# If namespace/class/struct decleration
+		# If namespace/class/struct declaration
 		[[ $fullPrompt =~ ^.?[[:alnum:]\*:]*[[:blank:]]*(namespace|class|struct)[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*.*\{ ]] && addOutsideMain=true
 		# If if/else if/else/switch/while/do while/for/try/catch
-		[[ $fullPrompt =~ ^.?[[:blank:]]*(if|else if|else|switch|while|do|for|try|catch).*\{ ]] && addOutsideMain=false && addToBegining=false && addSemicolon=""
-		if $addToBegining;then
+		[[ $fullPrompt =~ ^.?[[:blank:]]*(if|else if|else|switch|while|do|for|try|catch).*\{ ]] && addOutsideMain=false && addToBeginning=false && addSemicolon=""
+		if $addToBeginning;then
 			echo "$fullPrompt"$addSemicolon > $sourceFile.tmp
 			echo "`cat $sourceFile`" >> $sourceFile.tmp
 		elif $addOutsideMain;then
