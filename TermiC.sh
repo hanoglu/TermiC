@@ -60,9 +60,9 @@ while true;do
 		\nclear: Deletes all declared functions, classes etc. and resets shell\
 		\nexit: Deletes created temp files and exits program" && continue
 	fullPrompt=`echo "$fullPrompt"; echo "$prompt"`
-	fullPrompt=`echo $fullPrompt | sed '/^[[:blank:]]*$/d'`
-	inlineOpen=`echo $fullPrompt | grep -o { | wc -l`
-	inlineClose=`echo $fullPrompt | grep -o } | wc -l`
+	fullPrompt=`echo "$fullPrompt" | sed '/^[[:blank:]]*$/d'`
+	inlineOpen=`echo $fullPrompt | grep -o '{\|#ifdef' | wc -l`
+	inlineClose=`echo $fullPrompt | grep -o '}\|#endif' | wc -l`
 	inlineCounter=$((inlineOpen-inlineClose))
 	if [[ $inlineOpen -gt $inlineClose ]];then
 		:
@@ -74,6 +74,8 @@ while true;do
 		[[ $prompt == "#include "* ]] && addToBeginning=true && addSemicolon=""
 		# If definition
 		[[ $prompt == "#define "* ]] && addOutsideMain=true && addSemicolon=""
+		# If ifdef/elif/else/endif
+		[[ $prompt == "#ifdef"* || $prompt == "#elif"* || $prompt == "#else" || $prompt == "#endif" ]] && addToBeginning=true && addSemicolon=""
 		# If function declaration
 		[[ $fullPrompt =~ ^.?[[:alnum:]\*:]+[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*[[:alnum:]:]+\(.*\)[[:blank:]]*.*\{ ]] && addOutsideMain=true && addSemicolon=""
 		# If namespace/class/struct declaration
@@ -87,6 +89,7 @@ while true;do
 			echo "`cat $sourceFile`" >> $sourceFile.tmp
 		elif $addOutsideMain;then
 			fullPrompt=`printf "%s" "$fullPrompt" | sed -e 's/[&\\]/\\\&/g'`
+			fullPrompt=`echo $fullPrompt`
 			sed "/^int main() {/i$fullPrompt$addSemicolon" $sourceFile > $sourceFile.tmp
 		else
 			cp $sourceFile $sourceFile.tmp
