@@ -18,7 +18,7 @@ addInclude=""
 [[ $1 == "tcc" ]] && compiler="tcc"
 [[ $1 == "cpp" ]] || [[ $0 =~ \+\+ ]] && lang="c++" && compiler="g++ -fpermissive" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
 command -v bat > /dev/null 2>&1 && catcmd="bat -p -l $lang" || catcmd=cat
-echo TermiC 1.2.2V
+echo TermiC 1.3.0V
 echo Language: $lang
 echo Compiler: $compiler
 echo Type \'help\' for additional information
