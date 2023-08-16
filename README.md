@@ -98,7 +98,7 @@ To install TermiC system wide:
 ```bash
 wget "https://raw.githubusercontent.com/hanoglu/TermiC/main/TermiC.sh"
 sudo cp TermiC.sh /bin/termic
-sudo ln -s /usr/bin/termic /usr/bin/termic++
+sudo ln -sf /usr/bin/termic /usr/bin/termic++
 sudo chmod +x /bin/termic
 rm -f TermiC.sh
 ```
