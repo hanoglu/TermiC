@@ -4,7 +4,7 @@ Interactive C/C++ shell created with BASH.
 A simple function in TermiC:
 ```c
 [user@FEDORA ~]$ termic
-TermiC 1.2.2V
+TermiC 1.3.0V
 Language: c
 Compiler: gcc
 Type 'help' for additional information
@@ -21,7 +21,7 @@ Division 25/2 is equal 12.500000
 Implementing classes in TermiC++:
 ```cpp
 [user@FEDORA ~]$ termic++
-TermiC 1.2.2V
+TermiC 1.3.0V
 Language: c++
 Compiler: g++ -fpermissive
 Type 'help' for additional information
@@ -44,7 +44,7 @@ Age of student 'a' 15
 Using vectors in TermiC++:
 ```cpp
 [user@FEDORA ~]$ termic++
-TermiC 1.2.2V
+TermiC 1.3.0V
 Language: c++
 Compiler: g++ -fpermissive
 Type 'help' for additional information
