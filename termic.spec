@@ -1,5 +1,5 @@
 Name: termic
-Version: 1.3.0
+Version: 1.3
 Release: %{autorelease}
 BuildArch: noarch
 Summary: GCC powered interactive C/C++ terminal created with BASH
