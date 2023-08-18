@@ -15,10 +15,27 @@ lang="c"
 extension="c"
 compiler="gcc"
 addInclude=""
+versiontxt="1.3.0V"
+helptxt="TermiC $versiontxt \nLicensed under GPLv3\
+    \n--help -h: \t Shows this help menu
+    \n--version -v: \t Shows the version number
+		\n\nC Mode: \ttermic\
+		\nCPP Mode: \ttermic cpp\
+    \n\t\ttermic++
+		\nTCC Mode: \ttermic tcc\
+		\n\nCommands:\
+    \nhelp: \t\tShows this help menu\nabort: \t\tAborts inline prompt mode which are entered by curly bracket\
+		\nshow: \t\tPrints last successfully compiled source file\nshowtmp: \tPrints last compiled source file with deleted edits\
+		\nsave: \t\tSaves source file to working directory\nsavebin: \tSaves binary file to working directory\
+		\nclear: \t\tDeletes all declared functions, classes etc. and resets shell\
+		\nexit: \t\tDeletes created temp files and exits program\
+    \n\nAuthors:\nYusuf Kagan Hanoglu\nMax Schillinger"
+[[ $1 == "-h" || $1 == "--help" ]] && echo -e $helptxt && exit
+[[ $1 == "-v" || $1 == "--version" ]] && echo $versiontxt && exit
 [[ $1 == "tcc" ]] && compiler="tcc"
 [[ $1 == "cpp" ]] || [[ $0 =~ \+\+ ]] && lang="c++" && compiler="g++ -fpermissive" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
 command -v bat > /dev/null 2>&1 && catcmd="bat -p -l $lang" || catcmd=cat
-echo TermiC 1.3.0V
+echo TermiC $versiontxt
 echo Language: $lang
 echo Compiler: $compiler
 echo Type \'help\' for additional information
@@ -51,14 +68,7 @@ while true;do
 	[[ $prompt == "showtmp" ]] && { [[ -f $sourceFile.tmp ]] && $catcmd $sourceFile.tmp || echo "No .tmp file!"; continue; }
 	[[ $prompt == "save" ]] && cp $sourceFile $oldPWD && echo "}" >> $oldPWD/$sourceFile && echo "Source file saved to $oldPWD/$sourceFile" && continue
 	[[ $prompt == "savebin" ]] && cp $binaryFile $oldPWD && echo "Binary file saved to $oldPWD/$binaryFile" && continue
-	[[ $prompt == "help" ]] && echo -e "Designed by Yusuf Kağan Hanoğlu\nLicensed by GPLv3\
-		\nC Mode: ./TermiC.sh\
-		\nCPP Mode: ./TermiC.sh cpp\
-		\n\nCommands:\nhelp: Shows this help menu\nabort: Aborts inline prompt mode which are entered by curly bracket\
-		\nshow: Prints last successfully compiled source file\nshowtmp: Prints last compiled source file with deleted edits\
-		\nsave: Saves source file to working directory\nsavebin: Saves binary file to working directory\
-		\nclear: Deletes all declared functions, classes etc. and resets shell\
-		\nexit: Deletes created temp files and exits program" && continue
+	[[ $prompt == "help" ]] && echo -e "$helptxt" && continue
 	fullPrompt=`echo "$fullPrompt"; echo "$prompt"`
 	fullPrompt=`echo "$fullPrompt" | sed '/^[[:blank:]]*$/d'`
 	inlineOpen=`echo $fullPrompt | grep -o '{\|#ifdef' | wc -l`
