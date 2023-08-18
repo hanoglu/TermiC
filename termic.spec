@@ -6,7 +6,7 @@ Summary: GCC powered interactive C/C++ terminal created with BASH
 
 License: GPLv3
 URL: https://github.com/hanoglu/termic
-Source0: %{url}/blob/copr/%{name}-%{version}.tar.gz
+Source0: %{url}/raw/copr/%{name}-%{version}.tar.gz
 
 Requires: bash gcc gcc-c++
 
