@@ -1,5 +1,5 @@
 # TermiC: Terminal C
-Interactive C/C++ shell created with BASH.
+Interactive C/C++ REPL shell created with BASH.
 ## How to Use
 A simple function in TermiC:
 ```c
