@@ -15,12 +15,11 @@ TermiC is an interactive C/C++ terminal powered by GCC and written in BASH.
 It provides a convenient way to experiment with C/C++ code snippets.
 
 %prep
-%autosetup
-
+%autosetup -n TermiC-%{version}
 
 %install
-install -D -m 755 TermiC-%{version}/%{name} %{buildroot}/%{_bindir}/%{name}
-install -D -m 644 TermiC-%{version}/%{name}.1 %{buildroot}/%{_mandir}/man1/%{name}.1
+install -D -m 755 %{name} %{buildroot}/%{_bindir}/%{name}
+install -D -m 644 %{name}.1 %{buildroot}/%{_mandir}/man1/%{name}.1
 
 %check
 
