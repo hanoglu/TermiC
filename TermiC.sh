@@ -22,6 +22,8 @@ helptxt="TermiC $versiontxt \nLicensed under GPLv3\
 		\n\nC Mode: \ttermic\
 		\nCPP Mode: \ttermic cpp\
     \n\t\ttermic++
+		\nCPP 2017 Mode: \ttermic cpp17\
+		\nCPP 2020 Mode: \ttermic cpp20\
 		\nTCC Mode: \ttermic tcc\
 		\n\nCommands:\
     \nhelp: \t\tShows this help menu\nabort: \t\tAborts inline prompt mode which are entered by curly bracket\
@@ -34,6 +36,8 @@ helptxt="TermiC $versiontxt \nLicensed under GPLv3\
 [[ $1 == "-v" || $1 == "--version" ]] && echo $versiontxt && exit
 [[ $1 == "tcc" ]] && compiler="tcc"
 [[ $1 == "cpp" ]] || [[ $0 =~ \+\+ ]] && lang="c++" && compiler="g++ -fpermissive" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
+[[ $1 == "cpp17" ]] || [[ $0 =~ \+\+ ]] && lang="c++" && compiler="g++ -fpermissive -std=c++17" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
+[[ $1 == "cpp20" ]] || [[ $0 =~ \+\+ ]] && lang="c++" && compiler="g++ -fpermissive -std=c++2a" && extension="cpp" && addInclude="#include <iostream>\nusing namespace std;\n"
 command -v bat > /dev/null 2>&1 && catcmd="bat -p -l $lang" || catcmd=cat
 echo TermiC $versiontxt
 echo Language: $lang
