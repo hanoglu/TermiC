@@ -4,7 +4,7 @@ Release: 1%{?dist}
 BuildArch: noarch
 Summary: GCC powered interactive C/C++ terminal created with BASH
 
-License: GPLv3
+License: GPL-3.0-only
 URL: https://github.com/hanoglu/termic
 Source0: %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
