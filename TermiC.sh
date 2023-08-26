@@ -111,7 +111,8 @@ while true;do
 
 		if $compiledSuccessfully;then
 			retval=`./$binaryFile 2>&1`
-			[[ $retval == "" ]] && mv $sourceFile.tmp $sourceFile || echo "$retval"
+			[[ $retval == "" ]] || echo "$retval"
+			mv $sourceFile.tmp $sourceFile
 		fi
 	fi
 done
