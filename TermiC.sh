@@ -62,7 +62,7 @@ echo -e  $initSource > $sourceFile
 trap "echo -e '\nKeyboardInterrupt'" SIGINT
 while true;do
 	[[ $inlineCounter -gt 0 ]] && promptPS1="   " || promptPS1=">> "
-	prompt=$(read -rep "$promptPS1"$(echo $(yes ... | head -n $inlineCounter) | sed 's/ //g') prompt || { [[ $inlineCounter -gt 0 ]] || prompt="exit"; } ; echo $prompt)
+	prompt=$(read -rep "$promptPS1"$(yes ... | head -n $inlineCounter | tr -d '\n') prompt || { [[ $inlineCounter -gt 0 ]] || prompt="exit"; } ; echo $prompt)
 	[[ $prompt == "" ]] && continue
 	history -s "$prompt"
 	[[ $prompt == "exit" ]] && break
@@ -78,9 +78,7 @@ while true;do
 	inlineOpen=`echo $fullPrompt | grep -o '{\|#ifdef' | wc -l`
 	inlineClose=`echo $fullPrompt | grep -o '}\|#endif' | wc -l`
 	inlineCounter=$((inlineOpen-inlineClose))
-	if [[ $inlineOpen -gt $inlineClose ]];then
-		:
-	else
+	if [[ $inlineCounter -le 0 ]];then
 		addOutsideMain=false
 		addToBeginning=false
 		addSemicolon=";"
@@ -95,12 +93,11 @@ while true;do
 		# If namespace/class/struct declaration
 		[[ $fullPrompt =~ ^.?[[:alnum:]\*:]*[[:blank:]]*(namespace|class|struct)[[:blank:]]*[[:alnum:]\*:]*[[:blank:]]*.*\{ ]] && addOutsideMain=true
 		# If if/else if/else/switch/while/do while/for/try/catch
-
 		[[ $fullPrompt =~ ^.?[[:blank:]]*(if|else if|else|switch|while|do|for|try|catch).*\{ ]] && addOutsideMain=false && addToBeginning=false && addSemicolon=""
-    [[ $fullPrompt == *";" ]] && addSemicolon=""
+		[[ $fullPrompt == *";" ]] && addSemicolon=""
 		if $addToBeginning;then
 			echo "$fullPrompt"$addSemicolon > $sourceFile.tmp
-			echo "`cat $sourceFile`" >> $sourceFile.tmp
+			cat $sourceFile >> $sourceFile.tmp
 		elif $addOutsideMain;then
 			fullPrompt=`printf "%s" "$fullPrompt" | sed -e 's/[&\\]/\\\&/g'`
 			fullPrompt=`echo $fullPrompt`
@@ -110,10 +107,8 @@ while true;do
 			echo "$fullPrompt$addSemicolon" >> $sourceFile.tmp
 		fi
 		fullPrompt=""
-		compiledSuccessfully=false
-		$compiler -w -x$lang <(echo "`cat $sourceFile.tmp`}") -o $binaryFile && compiledSuccessfully=true
-
-		if $compiledSuccessfully;then
+		if $compiler -w -x$lang <(cat $sourceFile.tmp; echo "}") -o $binaryFile
+		then
 			retval=`./$binaryFile 2>&1`
 			[[ $retval == "" ]] && mv $sourceFile.tmp $sourceFile || echo "$retval"
 		fi
