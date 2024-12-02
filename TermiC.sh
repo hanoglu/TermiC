@@ -62,7 +62,7 @@ echo -e  $initSource > $sourceFile
 trap "echo -e '\nKeyboardInterrupt'" SIGINT
 while true;do
 	[[ $inlineCounter -gt 0 ]] && promptPS1="   " || promptPS1=">> "
-	prompt=$(read -rep "$promptPS1"$(yes ... | head -n $inlineCounter | tr -d '\n') prompt || { [[ $inlineCounter -gt 0 ]] || prompt="exit"; } ; echo $prompt)
+	read -rep "$promptPS1"$(yes ... | head -n $inlineCounter | tr -d '\n') prompt || { [[ $inlineCounter -gt 0 ]] || prompt="exit"; }
 	[[ $prompt == "" ]] && continue
 	history -s "$prompt"
 	[[ $prompt == "exit" ]] && break
