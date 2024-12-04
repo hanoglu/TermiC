@@ -46,6 +46,7 @@ echo Type \'help\' for additional information
 oldPWD=`pwd`
 cd /tmp
 sourceFile=`mktemp termic-XXXXXXXX.$extension`
+[[ -z "$sourceFile" ]] && exit 1
 binaryFile=`basename $sourceFile .$extension`
 cacheDir="${XDG_CACHE_HOME:-$HOME/.cache}/termic"
 [[ -d $cacheDir ]] || mkdir -p "$cacheDir"
